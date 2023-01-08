@@ -38,6 +38,9 @@ public:
     ~Graph();
     void InsertEdge(int u, int v, int w);
     void InsertVertex(int v);
+    void MinSpanTree();
+    void ShortestPath(int v);
+    int **getAdjMatrix() const { return adjMatrix; }
 
 private:
     int n, e;

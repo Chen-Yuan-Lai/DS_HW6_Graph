@@ -1,4 +1,6 @@
 #include "Graph.h"
+#include <vector>
+#include <iostream>
 using namespace std;
 
 MinPQ::MinPQ(int theCapcity) : heapSize(0), capacity(theCapcity)
@@ -16,6 +18,7 @@ void MinPQ::doubleSize()
     copy(heap, heap + capacity + 1, tmp);
     delete[] heap;
     tmp = heap;
+    capacity *= 2;
 }
 void MinPQ::push(const Node &x)
 { // Insert x into the min heap
@@ -23,8 +26,6 @@ void MinPQ::push(const Node &x)
     {
         doubleSize();
     }
-    capacity *= 2;
-
     int currentNode = ++heapSize;
     while (currentNode != 1 && heap[currentNode / 2].weight > x.weight)
     {                                              // buble up
@@ -64,16 +65,17 @@ void MinPQ::pop()
 
 Graph::Graph(int vertices, bool d) : n(0), e(0), direc(d), capacity(vertices)
 {
-    adjMatrix = new int *[n];
-    for (int i = 0; i < n; i++)
+    adjMatrix = new int *[capacity];
+    for (int i = 0; i < capacity; i++)
     {
-        adjMatrix[i] = new int[n];
+        adjMatrix[i] = new int[capacity];
+        fill(adjMatrix[i], adjMatrix[i] + capacity, 0);
     }
 }
 
 Graph::~Graph()
 {
-    for (int i = 0; i < n; i++)
+    for (int i = 0; i < capacity; i++)
     {
         delete[] adjMatrix[i];
     }
@@ -94,6 +96,90 @@ void Graph::InsertEdge(int u, int v, int w)
     if (u >= n || v >= n)
         throw "the graph has no these vertex";
     adjMatrix[u][v] = w;
-    if (direc)
+    if (!direc)
         adjMatrix[v][u] = w;
+    e++;
+}
+
+void Graph::MinSpanTree()
+{
+    int totalCost = 0;
+    vector<int> T;
+    cout << n << endl;
+    cout << e << endl;
+
+    // add edges from adjMatrix into MaxPQ
+    MinPQ E;
+    for (int i = 0; i < n; i++)
+    {
+        for (int j = i + 1; j < n; j++)
+        {
+            if (adjMatrix[i][j] > 0)
+            {
+                E.push(Node(i, j, adjMatrix[i][j]));
+            }
+        }
+    }
+    // Kruskal's algorithm
+    while (((int)T.size() < n) && (!E.IsEmpty()))
+    {
+        pair<bool, bool> intersect(false, false);
+        Node lowestE = E.top();
+        E.pop();
+
+        // check vertecies in T not intersect with lowestE
+        if (!T.empty())
+        {
+            // search v1
+            for (auto &t : T)
+            {
+                if (lowestE.v1 == t)
+                {
+                    intersect.first = true;
+                    break;
+                }
+            }
+
+            // search v2
+            for (auto &t : T)
+            {
+                if (lowestE.v2 == t)
+                {
+                    intersect.second = true;
+                    break;
+                }
+            }
+        }
+        // insert unique vertex in to graph
+        if (!intersect.first || !intersect.second)
+        {
+            if (!intersect.first && !intersect.second)
+            {
+                T.push_back(lowestE.v1);
+                T.push_back(lowestE.v2);
+            }
+            else if (!intersect.first)
+            {
+                T.push_back(lowestE.v1);
+            }
+            else
+            {
+                T.push_back(lowestE.v2);
+            }
+            totalCost += lowestE.weight;
+        }
+    }
+    if ((int)T.size() < n - 1)
+    {
+        cout << "no spanning tree" << endl;
+    }
+    else
+    { // print the tree and total cost
+        cout << "Minimal cost spanning tree:" << endl;
+        for (int i = 0; i < (int)T.size() - 1; i++)
+        {
+            cout << T[i] << " " << T[i + 1] << endl;
+        }
+        cout << "total cost: " << totalCost << endl;
+    }
 }
