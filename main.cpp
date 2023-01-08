@@ -5,24 +5,67 @@ using namespace std;
 
 int main()
 {
-    // insert vertecies
-    Graph g(6);
-    for (int i = 0; i < 6; i++)
+    while (1)
     {
-        g.InsertVertex(i);
+        cout << "\n"
+             << "================================\n"
+             << "What graph do you input: \n"
+             << "(1) directed graph\n"
+             << "(2) un-directed graph\n"
+             << "(3) exit\n"
+             << endl;
+
+        char option;
+        cin >> option;
+        if (option == '3')
+        {
+            cout << "Exit the program!" << endl;
+            break;
+        }
+
+        int vertcies;
+        int edges;
+        cout << "Vertex number: ";
+        cin >> vertcies;
+        cout << "Edge number: ";
+        cin >> edges;
+        int v;
+        int u;
+        int w;
+        if (option == '1')
+        {
+            Graph g(vertcies, true);
+            // insert vertecies
+            for (int i = 0; i < vertcies; i++)
+            {
+                g.InsertVertex(i);
+            }
+            for (int i = 0; i < edges; i++)
+            {
+                cout << "Enter a edge[vertex1 vertext2 weight]: ";
+                cin >> v >> u >> w;
+                g.InsertEdge(v, u, w);
+            }
+            int source;
+            cout << "Source vertex: ";
+            cin >> source;
+            g.ShortestPath(source);
+        }
+        else if (option == '2')
+        {
+            Graph g(vertcies);
+            // insert vertecies
+            for (int i = 0; i < vertcies; i++)
+            {
+                g.InsertVertex(i);
+            }
+            for (int i = 0; i < edges; i++)
+            {
+                cout << "Enter a edge[vertex1, vertext2, weight]: ";
+                cin >> v >> u >> w;
+                g.InsertEdge(v, u, w);
+            }
+            g.MinSpanTree();
+        }
     }
-    // insert edge
-    g.InsertEdge(0, 1, 20);
-    g.InsertEdge(0, 2, 15);
-    g.InsertEdge(1, 4, 10);
-    g.InsertEdge(1, 5, 30);
-    g.InsertEdge(2, 3, 4);
-    g.InsertEdge(2, 5, 10);
-    g.InsertEdge(3, 4, 15);
-    g.InsertEdge(3, 5, 4);
-    g.InsertEdge(4, 5, 10);
-
-    g.MinSpanTree();
-
-    return 0;
 }

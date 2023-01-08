@@ -1,32 +1,49 @@
-
-
-// void MatrixWDigraph::ShortestPath(const int n, const int v)
-// { // dist[j], 0<= j < n, is set to the length of the shortest path from v to j
-//   // in a digraph G with n vertices and edge lengths given by length[i][j].
-//   // path[j], 0 <= j < n, is a queue array that store nodes in sortest path
-//   // from v to j.
-//     for (int i = 0; i < n; i++)
-//     { // initialize
-//         dist[i] = length[v][i];
+// int main()
+// {
+//     // insert vertecies
+//     Graph g(6);
+//     for (int i = 0; i < 6; i++)
+//     {
+//         g.InsertVertex(i);
 //     }
-//     s[v] = true;
-//     dist[v] = 0;
+//     // insert edge
+//     g.InsertEdge(0, 1, 20);
+//     g.InsertEdge(0, 2, 15);
+//     g.InsertEdge(1, 4, 10);
+//     g.InsertEdge(1, 5, 30);
+//     g.InsertEdge(2, 3, 4);
+//     g.InsertEdge(2, 5, 10);
+//     g.InsertEdge(3, 4, 15);
+//     g.InsertEdge(3, 5, 4);
+//     g.InsertEdge(4, 5, 10);
 
-//     for (int i = 0; i < n - 2; i++)
-//     { // determine n-1 paths from vertex v
-//       //  choose returns a value u such that:
-//       //  dist[u] = minimum dist[w], where s[w] = false
-//         int u Choose(n);
-//         s[u] = true;
-//         for (int w = 0; i < n; w++)
-//         {
-//             if (!s[w] && dist[u] + length[u][w] < dist[w])
-//             {
-//                 dist[w] = dist[u] + length[u][w];
-//                 // put that u into the queue
-//                 // where store the shotest path from v to w
-//                 path[w].push(u);
-//             }
-//         }
+//     g.MinSpanTree();
+
+//     return 0;
+// }
+
+// int main()
+// {
+//     // inilize a directed graph
+//     Graph g(6, true);
+//     // insert vertecies
+//     for (int i = 0; i < 6; i++)
+//     {
+//         g.InsertVertex(i);
 //     }
+
+//     // insert edge (directed)
+//     g.InsertEdge(0, 1, 20);
+//     g.InsertEdge(1, 0, 2);
+//     g.InsertEdge(0, 2, 15);
+//     g.InsertEdge(1, 4, 10);
+//     g.InsertEdge(1, 5, 30);
+//     g.InsertEdge(2, 3, 4);
+//     g.InsertEdge(2, 5, 10);
+//     g.InsertEdge(4, 3, 15);
+//     g.InsertEdge(5, 3, 4);
+//     g.InsertEdge(5, 4, 10);
+
+//     g.ShortestPath(0);
+//     return 0;
 // }

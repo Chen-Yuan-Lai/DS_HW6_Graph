@@ -105,9 +105,6 @@ void Graph::MinSpanTree()
 {
     int totalCost = 0;
     vector<int> T;
-    cout << n << endl;
-    cout << e << endl;
-
     // add edges from adjMatrix into MaxPQ
     MinPQ E;
     for (int i = 0; i < n; i++)
@@ -178,7 +175,7 @@ void Graph::MinSpanTree()
         cout << "Minimal cost spanning tree:" << endl;
         for (int i = 0; i < (int)T.size() - 1; i++)
         {
-            cout << T[i] << " " << T[i + 1] << endl;
+            cout << T[i] << ", " << T[i + 1] << endl;
         }
         cout << "total cost: " << totalCost << endl;
     }
@@ -188,6 +185,7 @@ void Graph::ShortestPath(int v)
 {
     int dist[n];
     bool s[n];
+    vector<Node> path;
     for (int i = 0; i < n; i++)
     { // initialize
         if (adjMatrix[v][i] == 0)
@@ -196,21 +194,51 @@ void Graph::ShortestPath(int v)
         }
         else
         {
-            dist = adjMatrix[v][i];
+            dist[i] = adjMatrix[v][i];
         }
         s[i] = false;
     }
     dist[v] = 0;
     s[v] = true;
 
-    //  choose a value u such that:
-    //  dist[u] = minimum dist[w], where s[w] = false
-    int u;
-    for (int i = 0; i < n; i++)
-    {
-        if (!s[i])
+    for (int i = 0; i < n - 2; i++)
+    { // determine n-1 paths from vertex v
+        //  choose a value u such that:
+        //  dist[u] = minimum dist[w], where s[w] = false
+        int u = 0;
+        for (int k = 0; k < n; k++)
         {
-            u = i;
+            if (!s[k])
+                u = k;
+        }
+
+        for (int j = 0; j < n; j++)
+        {
+            if (!s[j] && dist[j] < dist[u])
+            {
+                u = j;
+            }
+        }
+        s[u] = true;
+        for (int w = 0; w < n; w++)
+        {
+            if (!s[w] && adjMatrix[u][w] > 0)
+            {
+                if (dist[u] + adjMatrix[u][w] < dist[w])
+                    dist[w] = dist[u] + adjMatrix[u][w];
+            }
         }
     }
+
+    // the shortest path from source v to all destinations
+    cout << "The shortest path from source" << v
+         << "to all destinations: " << endl;
+    for (int i = 0; i < n; i++)
+    {
+        if (i == v)
+            continue;
+        cout << v << ", " << i << ", "
+             << dist[i] << endl;
+    }
+    cout << endl;
 }
