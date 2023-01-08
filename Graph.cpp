@@ -183,3 +183,34 @@ void Graph::MinSpanTree()
         cout << "total cost: " << totalCost << endl;
     }
 }
+
+void Graph::ShortestPath(int v)
+{
+    int dist[n];
+    bool s[n];
+    for (int i = 0; i < n; i++)
+    { // initialize
+        if (adjMatrix[v][i] == 0)
+        {
+            dist[i] = 999;
+        }
+        else
+        {
+            dist = adjMatrix[v][i];
+        }
+        s[i] = false;
+    }
+    dist[v] = 0;
+    s[v] = true;
+
+    //  choose a value u such that:
+    //  dist[u] = minimum dist[w], where s[w] = false
+    int u;
+    for (int i = 0; i < n; i++)
+    {
+        if (!s[i])
+        {
+            u = i;
+        }
+    }
+}
